@@ -1,0 +1,24 @@
+{
+  "name": "beagle-angular",
+  "version": "0.0.0",
+  "license": "MIT",
+  "main": "bundles/beagle-angular.umd.js",
+  "module": "fesm5/beagle-angular.js",
+  "es2015": "fesm2015/beagle-angular.js",
+  "esm5": "esm5/beagle-angular.js",
+  "esm2015": "esm2015/beagle-angular.js",
+  "fesm5": "fesm5/beagle-angular.js",
+  "fesm2015": "fesm2015/beagle-angular.js",
+  "typings": "index.d.ts",
+  "metadata": "beagle-angular.metadata.json",
+  "sideEffects": false,
+  "private": false,
+  "dependencies": {
+    "beagle-web": "https://github.com/ZupIT/beagle-web.git#53bea85adfa9a62977a8b2c1bf1dbf264e07c47f"
+  },
+  "peerDependencies": {
+    "@angular/common": "^9.0.0",
+    "@angular/core": "^9.0.0",
+    "tslib": "^1.10.0"
+  }
+}
