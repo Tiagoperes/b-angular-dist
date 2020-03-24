@@ -1,0 +1,13 @@
+import { __decorate } from "tslib";
+import { NgModule } from '@angular/core';
+import { BeagleContextDirective } from './directive';
+let BeagleContextModule = class BeagleContextModule {
+};
+BeagleContextModule = __decorate([
+    NgModule({
+        declarations: [BeagleContextDirective],
+        exports: [BeagleContextDirective],
+    })
+], BeagleContextModule);
+export { BeagleContextModule };
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoibW9kdWxlLmpzIiwic291cmNlUm9vdCI6Im5nOi8vYmVhZ2xlLWFuZ3VsYXIvIiwic291cmNlcyI6WyJydW50aW1lL2JlYWdsZS1jb250ZXh0L21vZHVsZS50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiO0FBQUEsT0FBTyxFQUFFLFFBQVEsRUFBRSxNQUFNLGVBQWUsQ0FBQTtBQUN4QyxPQUFPLEVBQUUsc0JBQXNCLEVBQUUsTUFBTSxhQUFhLENBQUE7QUFNcEQsSUFBYSxtQkFBbUIsR0FBaEMsTUFBYSxtQkFBbUI7Q0FBRyxDQUFBO0FBQXRCLG1CQUFtQjtJQUovQixRQUFRLENBQUM7UUFDUixZQUFZLEVBQUUsQ0FBQyxzQkFBc0IsQ0FBQztRQUN0QyxPQUFPLEVBQUUsQ0FBQyxzQkFBc0IsQ0FBQztLQUNsQyxDQUFDO0dBQ1csbUJBQW1CLENBQUc7U0FBdEIsbUJBQW1CIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgTmdNb2R1bGUgfSBmcm9tICdAYW5ndWxhci9jb3JlJ1xuaW1wb3J0IHsgQmVhZ2xlQ29udGV4dERpcmVjdGl2ZSB9IGZyb20gJy4vZGlyZWN0aXZlJ1xuXG5ATmdNb2R1bGUoe1xuICBkZWNsYXJhdGlvbnM6IFtCZWFnbGVDb250ZXh0RGlyZWN0aXZlXSxcbiAgZXhwb3J0czogW0JlYWdsZUNvbnRleHREaXJlY3RpdmVdLFxufSlcbmV4cG9ydCBjbGFzcyBCZWFnbGVDb250ZXh0TW9kdWxlIHt9XG4iXX0=

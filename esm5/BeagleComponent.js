@@ -1,7 +1,0 @@
-var BeagleComponent = /** @class */ (function () {
-    function BeagleComponent() {
-    }
-    return BeagleComponent;
-}());
-export { BeagleComponent };
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiQmVhZ2xlQ29tcG9uZW50LmpzIiwic291cmNlUm9vdCI6Im5nOi8vYmVhZ2xlLWFuZ3VsYXIvIiwic291cmNlcyI6WyJCZWFnbGVDb21wb25lbnQudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBRUE7SUFBQTtJQUVBLENBQUM7SUFBRCxzQkFBQztBQUFELENBQUMsQUFGRCxJQUVDIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgQmVhZ2xlQ29udGV4dCB9IGZyb20gJy4vdHlwZXMnXG5cbmV4cG9ydCBhYnN0cmFjdCBjbGFzcyBCZWFnbGVDb21wb25lbnQge1xuICBwdWJsaWMgZ2V0QmVhZ2xlQ29udGV4dDogKCkgPT4gQmVhZ2xlQ29udGV4dFxufVxuIl19

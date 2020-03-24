@@ -1,0 +1,7 @@
+var BeagleComponent = /** @class */ (function () {
+    function BeagleComponent() {
+    }
+    return BeagleComponent;
+}());
+export { BeagleComponent };
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiQmVhZ2xlQ29tcG9uZW50LmpzIiwic291cmNlUm9vdCI6Im5nOi8vYmVhZ2xlLWFuZ3VsYXIvIiwic291cmNlcyI6WyJydW50aW1lL0JlYWdsZUNvbXBvbmVudC50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFFQTtJQUFBO0lBRUEsQ0FBQztJQUFELHNCQUFDO0FBQUQsQ0FBQyxBQUZELElBRUMiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeyBCZWFnbGVDb250ZXh0IH0gZnJvbSAnLi4vdHlwZXMnXG5cbmV4cG9ydCBhYnN0cmFjdCBjbGFzcyBCZWFnbGVDb21wb25lbnQge1xuICBwdWJsaWMgZ2V0QmVhZ2xlQ29udGV4dDogKCkgPT4gQmVhZ2xlQ29udGV4dFxufVxuIl19

@@ -43,20 +43,19 @@ function createStaticPromise() {
 var BeagleError = /** @class */ (function (_super) {
     __extends(BeagleError, _super);
     function BeagleError(message) {
-        var _this = _super.call(this, "Beagle: " + message) || this;
-        _this.name = 'BeagleError';
+        var _this = _super.call(this, message) || this;
+        _this.name = _this.constructor.name;
         return _this;
     }
     return BeagleError;
 }(Error));
-var BeagleMetadataError = /** @class */ (function (_super) {
-    __extends(BeagleMetadataError, _super);
-    function BeagleMetadataError() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.name = 'BeagleMetadataError';
-        return _this;
+
+var BeagleRuntimeError = /** @class */ (function (_super) {
+    __extends(BeagleRuntimeError, _super);
+    function BeagleRuntimeError(message) {
+        return _super.call(this, "Beagle runtime error: " + message) || this;
     }
-    return BeagleMetadataError;
+    return BeagleRuntimeError;
 }(BeagleError));
 
 var nextViewId = 1;
@@ -82,7 +81,7 @@ var AbstractBeagleRemoteView = /** @class */ (function () {
     AbstractBeagleRemoteView.prototype.createBeagleView = function () {
         var beagleService = this.beagleProvider.getBeagleUIService();
         if (!beagleService) {
-            throw new BeagleError('you need to start the beagle provider before using a remote view.');
+            throw new BeagleRuntimeError('you need to start the beagle provider before using a remote view.');
         }
         this.view = beagleService.createView();
         this.view.subscribe(this.updateView);
@@ -108,7 +107,7 @@ var AbstractBeagleRemoteView = /** @class */ (function () {
     };
     AbstractBeagleRemoteView.prototype.ngAfterViewInit = function () {
         if (!this.beagleProvider || !this.ngZone || !this.changeDetector) {
-            throw new BeagleError("Beagle: \"beagleProvider\", \"ngZone\" and \"changeDetector\" must be set before the AfterViewInit runs. Use the constructor or the component instance to set their values.");
+            throw new BeagleRuntimeError("\"beagleProvider\", \"ngZone\" and \"changeDetector\" must be set before the AfterViewInit runs. Use the constructor or the component instance to set their values.");
         }
         this.createBeagleView();
         this.view.updateWithFetch(this.loadParams);
