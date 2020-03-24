@@ -10,7 +10,7 @@ var cliOperations = {
         run: init_1.default,
     },
     'view-engine': {
-        description: 'Generates all the code you need when using Angular\' View Engine. This is not necessary when using Ivy.',
+        description: 'Generates all the code you need when using Angular\'s View Engine. This is not necessary when using Ivy.',
         options: [
             {
                 name: '--npm',
