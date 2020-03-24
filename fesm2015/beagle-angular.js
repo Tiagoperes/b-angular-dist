@@ -149,8 +149,17 @@ let BeagleContextDirective = class BeagleContextDirective {
     }
     ngOnInit() {
         var _a, _b;
+        let component;
         // @ts-ignore
-        const component = (_b = (_a = this.viewContainerRef._data) === null || _a === void 0 ? void 0 : _a.componentView) === null || _b === void 0 ? void 0 : _b.component;
+        if (ng && typeof (ng.getComponent) === 'function') {
+            //IVY provides ng.getComponent function whereas other versions don't
+            // @ts-ignore
+            component = ng.getComponent(this.elementRef.nativeElement);
+        }
+        else {
+            // @ts-ignore
+            component = (_b = (_a = this.viewContainerRef._data) === null || _a === void 0 ? void 0 : _a.componentView) === null || _b === void 0 ? void 0 : _b.component;
+        }
         if (component instanceof BeagleComponent) {
             component.getBeagleContext = () => getContext(this._viewId, this._elementId);
         }

@@ -365,8 +365,17 @@
         BeagleContextDirective.prototype.ngOnInit = function () {
             var _this = this;
             var _a, _b;
+            var component;
             // @ts-ignore
-            var component = (_b = (_a = this.viewContainerRef._data) === null || _a === void 0 ? void 0 : _a.componentView) === null || _b === void 0 ? void 0 : _b.component;
+            if (ng && typeof (ng.getComponent) === 'function') {
+                //IVY provides ng.getComponent function whereas other versions don't
+                // @ts-ignore
+                component = ng.getComponent(this.elementRef.nativeElement);
+            }
+            else {
+                // @ts-ignore
+                component = (_b = (_a = this.viewContainerRef._data) === null || _a === void 0 ? void 0 : _a.componentView) === null || _b === void 0 ? void 0 : _b.component;
+            }
             if (component instanceof BeagleComponent) {
                 component.getBeagleContext = function () { return getContext(_this._viewId, _this._elementId); };
             }

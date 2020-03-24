@@ -10,7 +10,7 @@ function getComponentAnnotations(component) {
     if (!annotations || !annotations.length) {
         throw new errors_1.default("Couldn't find annotations for component \"" + (component.name || component) + "\"");
     }
-    return annotations[0];
+    return annotations[annotations.length - 1];
 }
 exports.getComponentAnnotations = getComponentAnnotations;
 function getComponentInputs(component) {

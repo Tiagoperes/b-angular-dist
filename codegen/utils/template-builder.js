@@ -12,8 +12,8 @@ function createTemplateForComponent(selector, inputs) {
     var templateName = kebabToCamelCase(selector);
     var templateInputs = inputs.map(function (input) { return "let-" + input.propName + "=\"" + input.propName + "\""; }).join(' ');
     var componentInputs = inputs.map(function (input) { return "[" + input.templateName + "]=\"" + input.propName + "\""; }).join(' ');
-    var contextDirective = constants_1.contextSelector + " [_elementId]=\"id\" [_viewId]=\"viewId\"";
-    return "\n    <ng-template #" + templateName + " " + templateInputs + " let-children=\"children\" let-id=\"id\">\n      <" + selector + " " + componentInputs + " " + contextDirective + ">\n        <ng-container *ngFor=\"let child of children; trackBy: elementIdentity\">\n          <ng-container *ngTemplateOutlet=\"getTemplate(child._beagleType_);context:child\"></ng-container>\n        </ng-container>\n      </" + selector + ">\n    </ng-template>\n  ";
+    var contextDirective = constants_1.contextSelector + " [_elementId]=\"beagleId\" [_viewId]=\"viewId\"";
+    return "\n    <ng-template #" + templateName + " " + templateInputs + " let-children=\"children\" let-beagleId=\"id\">\n      <" + selector + " " + componentInputs + " " + contextDirective + ">\n        <ng-container *ngFor=\"let child of children; trackBy: elementIdentity\">\n          <ng-container *ngTemplateOutlet=\"getTemplate(child._beagleType_);context:child\"></ng-container>\n        </ng-container>\n      </" + selector + ">\n    </ng-template>\n  ";
 }
 function createRemoteViewTemplate(components) {
     var componentTemplates = components.map(function (_a) {

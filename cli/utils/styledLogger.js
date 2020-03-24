@@ -60,8 +60,12 @@ function log() {
         var codesForStyling = [];
         if (color)
             codesForStyling.push(terminalFgColors[color]);
-        if (background)
+        if (background) {
+            // windows doesn't mix background colors with foreground colors very well
+            if (process.platform === 'win32')
+                codesForStyling.push(terminalFontStyles.reset);
             codesForStyling.push(terminalBgColors[background]);
+        }
         if (style)
             codesForStyling.push.apply(codesForStyling, tslib_1.__spread(styleArray.map(function (st) { return terminalFontStyles[st]; })));
         var _b = codesForStyling.reduce(function (_a, codes) {
