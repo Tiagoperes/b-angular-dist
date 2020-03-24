@@ -1,5 +1,6 @@
-import { Type, ModuleWithProviders } from '@angular/core';
-import { BeagleConfig, BeagleUIService, DefaultSchema, LoadParams, BeagleUIElement, BeagleView } from 'beagle-web';
+import { Type } from '@angular/core';
+import { BeagleConfig, BeagleUIService, DefaultSchema, LoadParams, IdentifiableBeagleUIElement, BeagleView } from 'beagle-web';
+import { UpdateWithTreeParams } from 'beagle-web/dist/types';
 export interface BeagleAngularConfig<Schema> extends BeagleConfig<Schema> {
     components: {
         error: Type<{}>;
@@ -7,16 +8,20 @@ export interface BeagleAngularConfig<Schema> extends BeagleConfig<Schema> {
     } & {
         [K in keyof Schema]: Type<Schema[K]>;
     };
-    module?: Type<any> | ModuleWithProviders<{}> | any[];
+    module: {
+        path: string;
+        name: string;
+    };
 }
 export interface BeagleAngularUIService<Schema = DefaultSchema> extends BeagleUIService<Schema> {
     getConfig: () => BeagleAngularConfig<Schema>;
 }
-export interface BeagleContext {
-    replace: (params: LoadParams) => Promise<void>;
-    append: (params: LoadParams) => Promise<void>;
-    prepend: (params: LoadParams) => Promise<void>;
+export interface BeagleContext<T = any> {
+    replace: (params: LoadParams<T>) => Promise<void>;
+    append: (params: LoadParams<T>) => Promise<void>;
+    prepend: (params: LoadParams<T>) => Promise<void>;
+    updateWithTree: (params: Omit<UpdateWithTreeParams<T>, 'elementId'>) => void;
     getElementId: () => string;
-    getElement: () => BeagleUIElement<any> | null;
-    getView: () => BeagleView;
+    getElement: () => IdentifiableBeagleUIElement<T> | null;
+    getView: () => BeagleView<T>;
 }

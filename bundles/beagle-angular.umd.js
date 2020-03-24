@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('beagle-web/dist/utils/tree-reading'), require('@angular/core'), require('beagle-web')) :
-    typeof define === 'function' && define.amd ? define('beagle-angular', ['exports', 'beagle-web/dist/utils/tree-reading', '@angular/core', 'beagle-web'], factory) :
-    (global = global || self, factory(global['beagle-angular'] = {}, global.treeReading, global.ng.core, global.createCoreBeagleUIService));
-}(this, (function (exports, treeReading, core, createCoreBeagleUIService) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('beagle-web/dist/utils/tree-reading'), require('beagle-web'), require('@angular/core'), require('reflect-metadata')) :
+    typeof define === 'function' && define.amd ? define('beagle-angular', ['exports', 'beagle-web/dist/utils/tree-reading', 'beagle-web', '@angular/core', 'reflect-metadata'], factory) :
+    (global = global || self, factory(global['beagle-angular'] = {}, global.treeReading, global.createCoreBeagleUIService, global.ng.core));
+}(this, (function (exports, treeReading, createCoreBeagleUIService, core) { 'use strict';
 
     createCoreBeagleUIService = createCoreBeagleUIService && createCoreBeagleUIService.hasOwnProperty('default') ? createCoreBeagleUIService['default'] : createCoreBeagleUIService;
 
@@ -203,43 +203,25 @@
         return (mod && mod.__esModule) ? mod : { default: mod };
     }
 
-    var hasAlreadyCreatedModule = false;
-    function createBeagleModule(config) {
-        // if (hasAlreadyCreatedModule) throw new Error('Beagle: beagle module has already been created!')
-        // const beagleService = createCoreBeagleUIService<Schema>(config)
-        // // @ts-ignore
-        // const beagleComponent = createBeagleComponent(config.components, beagleService)
-        // return NgModule({
-        //   declarations: [beagleComponent],
-        //   exports: [beagleComponent],
-        //   imports: [config.module, CommonModule],
-        // })(class BeagleModule {})
-    }
-
-    var viewIdAttributeName = '__beagle_view_id';
-    var selector = 'beagle-remote-view';
-
     var views = {};
     function createContext(view, elementId) {
         return {
-            replace: function (params) { return (view.updateWithFetch(params, elementId, 'replace')); },
-            append: function (params) { return (view.updateWithFetch(params, elementId, 'append')); },
-            prepend: function (params) { return (view.updateWithFetch(params, elementId, 'prepend')); },
+            replace: function (params) { return view.updateWithFetch(params, elementId, 'replace'); },
+            append: function (params) { return view.updateWithFetch(params, elementId, 'append'); },
+            prepend: function (params) { return view.updateWithFetch(params, elementId, 'prepend'); },
+            updateWithTree: function (params) { return view.updateWithTree(__assign(__assign({}, params), { elementId: elementId })); },
             getElementId: function () { return elementId; },
             getElement: function () { return treeReading.findById(view.getTree(), elementId); },
             getView: function () { return view; }
         };
     }
-    function getContextByViewIdAndElementId(viewId, elementId) {
+    function getContext(viewId, elementId) {
+        if (!viewId || !elementId)
+            throw Error('Beagle: getContext couldn\'t find viewId or elementId');
         var view = views[viewId];
-        if (!viewId)
+        if (!view)
             throw Error("Beagle: getContext couldn't find view with id " + viewId);
         return createContext(view, elementId);
-    }
-    function getContext(viewRef) {
-        var viewId = viewRef.element.nativeElement.closest(selector).getAttribute(viewIdAttributeName);
-        var elementId = viewRef.element.nativeElement.id;
-        return getContextByViewIdAndElementId(viewId, elementId);
     }
     function registerView(viewId, view) {
         views[viewId] = view;
@@ -248,35 +230,89 @@
         delete views[viewId];
     }
 
+    function createStaticPromise() {
+        var staticPromise = {};
+        staticPromise.promise = new Promise(function (resolve, reject) {
+            staticPromise.resolve = resolve;
+            staticPromise.reject = reject;
+        });
+        return staticPromise;
+    }
+
+    var BeagleError = /** @class */ (function (_super) {
+        __extends(BeagleError, _super);
+        function BeagleError(message) {
+            var _this = _super.call(this, "Beagle: " + message) || this;
+            _this.name = 'BeagleError';
+            return _this;
+        }
+        return BeagleError;
+    }(Error));
+    var BeagleMetadataError = /** @class */ (function (_super) {
+        __extends(BeagleMetadataError, _super);
+        function BeagleMetadataError() {
+            var _this = _super !== null && _super.apply(this, arguments) || this;
+            _this.name = 'BeagleMetadataError';
+            return _this;
+        }
+        return BeagleMetadataError;
+    }(BeagleError));
+
     var nextViewId = 1;
-    var BeagleRemoteView = /** @class */ (function () {
-        function BeagleRemoteView(beagleProvider, ngZone, changeDetector) {
+    var AbstractBeagleRemoteView = /** @class */ (function () {
+        function AbstractBeagleRemoteView(beagleProvider, ngZone, changeDetector) {
             var _this = this;
             this.loadParams = { path: '' };
             this.viewId = "" + nextViewId++;
+            this.viewStaticPromise = createStaticPromise();
             this.updateView = function (uiTree) {
                 _this.ngZone.run(function () {
                     _this.tree = uiTree;
                     _this.changeDetector.detectChanges();
                 });
             };
-            this.ngZone = ngZone;
-            this.changeDetector = changeDetector;
-            var beagleService = beagleProvider.getBeagleUIService();
+            if (beagleProvider)
+                this.beagleProvider = beagleProvider;
+            if (ngZone)
+                this.ngZone = ngZone;
+            if (changeDetector)
+                this.changeDetector = changeDetector;
+        }
+        AbstractBeagleRemoteView.prototype.createBeagleView = function () {
+            var beagleService = this.beagleProvider.getBeagleUIService();
             if (!beagleService) {
-                throw new Error('Beagle: you need to start the beagle provider before using a remote view.');
+                throw new BeagleError('you need to start the beagle provider before using a remote view.');
             }
             this.view = beagleService.createView();
             this.view.subscribe(this.updateView);
+            this.view.addErrorListener(function (errorListener) {
+                errorListener.forEach(function (error) {
+                    console.error(error);
+                });
+            });
             registerView("" + this.viewId, this.view);
-        }
-        BeagleRemoteView.prototype.getTemplate = function (componentName) {
+            this.viewStaticPromise.resolve(this.view);
+        };
+        AbstractBeagleRemoteView.prototype.getTemplate = function (componentName) {
+            if (!this[componentName]) {
+                console.warn("Beagle: the component " + componentName + " was not declared in Beagle's configuration.");
+            }
             return this[componentName];
         };
-        BeagleRemoteView.prototype.ngAfterViewInit = function () {
+        AbstractBeagleRemoteView.prototype.elementIdentity = function (index, element) {
+            return element.id;
+        };
+        AbstractBeagleRemoteView.prototype.getView = function () {
+            return this.viewStaticPromise.promise;
+        };
+        AbstractBeagleRemoteView.prototype.ngAfterViewInit = function () {
+            if (!this.beagleProvider || !this.ngZone || !this.changeDetector) {
+                throw new BeagleError("Beagle: \"beagleProvider\", \"ngZone\" and \"changeDetector\" must be set before the AfterViewInit runs. Use the constructor or the component instance to set their values.");
+            }
+            this.createBeagleView();
             this.view.updateWithFetch(this.loadParams);
         };
-        BeagleRemoteView.prototype.ngOnChanges = function (changes) {
+        AbstractBeagleRemoteView.prototype.ngOnChanges = function (changes) {
             return __awaiter(this, void 0, void 0, function () {
                 return __generator(this, function (_a) {
                     if (changes && changes.loadParams) {
@@ -289,37 +325,96 @@
                 });
             });
         };
-        BeagleRemoteView.prototype.ngOnDestroy = function () {
+        AbstractBeagleRemoteView.prototype.ngOnDestroy = function () {
             unregisterView(this.viewId);
         };
-        return BeagleRemoteView;
+        return AbstractBeagleRemoteView;
     }());
 
-    var BeagleProvider = /** @class */ (function () {
-        function BeagleProvider() {
+    var AbstractBeagleProvider = /** @class */ (function () {
+        function AbstractBeagleProvider() {
         }
-        BeagleProvider.prototype.start = function (config) {
+        AbstractBeagleProvider.prototype.start = function (baseUrl) {
             if (this.service) {
                 console.error('Beagle service has already started!');
                 return;
             }
             // @ts-ignore // fixme
-            this.service = createCoreBeagleUIService(config);
+            this.service = createCoreBeagleUIService({ baseUrl: baseUrl });
         };
-        BeagleProvider.prototype.getBeagleUIService = function () {
+        AbstractBeagleProvider.prototype.getBeagleUIService = function () {
             return this.service;
         };
-        BeagleProvider = __decorate([
-            core.Injectable()
-        ], BeagleProvider);
-        return BeagleProvider;
+        return AbstractBeagleProvider;
     }());
 
-    var createBeagleModule$1 = createBeagleModule;
+    var viewIdAttributeName = '__beagle_view_id';
+    var remoteViewSelector = 'beagle-remote-view';
+    var contextSelector = 'beagle-context';
 
-    exports.BeagleProvider = BeagleProvider;
-    exports.BeagleRemoteView = BeagleRemoteView;
-    exports.createBeagleModule = createBeagleModule$1;
+    var BeagleComponent = /** @class */ (function () {
+        function BeagleComponent() {
+        }
+        return BeagleComponent;
+    }());
+
+    var BeagleContextDirective = /** @class */ (function () {
+        function BeagleContextDirective(viewContainerRef, elementRef) {
+            this.viewContainerRef = viewContainerRef;
+            this.elementRef = elementRef;
+        }
+        BeagleContextDirective.prototype.ngOnInit = function () {
+            var _this = this;
+            var _a, _b;
+            // @ts-ignore
+            var component = (_b = (_a = this.viewContainerRef._data) === null || _a === void 0 ? void 0 : _a.componentView) === null || _b === void 0 ? void 0 : _b.component;
+            if (component instanceof BeagleComponent) {
+                component.getBeagleContext = function () { return getContext(_this._viewId, _this._elementId); };
+            }
+        };
+        BeagleContextDirective.ctorParameters = function () { return [
+            { type: core.ViewContainerRef },
+            { type: core.ElementRef }
+        ]; };
+        __decorate([
+            core.Input()
+        ], BeagleContextDirective.prototype, "_elementId", void 0);
+        __decorate([
+            core.Input()
+        ], BeagleContextDirective.prototype, "_viewId", void 0);
+        BeagleContextDirective = __decorate([
+            core.Directive({
+                selector: "[" + contextSelector + "]",
+            })
+        ], BeagleContextDirective);
+        return BeagleContextDirective;
+    }());
+
+    var BeagleContextModule = /** @class */ (function () {
+        function BeagleContextModule() {
+        }
+        BeagleContextModule = __decorate([
+            core.NgModule({
+                declarations: [BeagleContextDirective],
+                exports: [BeagleContextDirective],
+            })
+        ], BeagleContextModule);
+        return BeagleContextModule;
+    }());
+
+    function BeagleModule(config) {
+        return function (target) {
+            Reflect.defineMetadata('beagleConfig', config, target);
+        };
+    }
+
+    exports.AbstractBeagleProvider = AbstractBeagleProvider;
+    exports.AbstractBeagleRemoteView = AbstractBeagleRemoteView;
+    exports.BeagleComponent = BeagleComponent;
+    exports.BeagleContextModule = BeagleContextModule;
+    exports.BeagleModule = BeagleModule;
+    exports.ɵa = BeagleContextDirective;
+    exports.ɵb = contextSelector;
 
     Object.defineProperty(exports, '__esModule', { value: true });
 

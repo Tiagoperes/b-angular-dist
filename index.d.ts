@@ -1,5 +1,6 @@
-import createModule from './createModule';
-export * from './BeagleRemoteView';
-export * from './provider';
+export * from './AbstractBeagleRemoteView';
+export * from './AbstractBeagleProvider';
 export * from './types';
-export declare const createBeagleModule: typeof createModule;
+export * from './beagle-context/module';
+export * from './BeagleComponent';
+export * from './decorator';
