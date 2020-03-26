@@ -6,6 +6,7 @@ var config_1 = require("../view-engine/config");
 var git_1 = require("../../utils/git");
 var packages_1 = require("../../utils/packages");
 var styledLogger_1 = require("../../utils/styledLogger");
+var config_2 = require("../view-engine/config");
 var dependencies = {
     'ts-node': 'latest',
     'amd-loader': 'latest',
@@ -42,14 +43,14 @@ function setupDependencies(isNpm) {
         styledLogger_1.logWarning("Could not install the dependencies. Please, run \"" + cmd + "\" before running you project.");
     }
 }
-function setupGitIgnore(outputPath) {
+function setupGitIgnore(paths) {
     try {
-        var hasFileChanged = git_1.addToGitIgnore(outputPath, 'Beagle');
+        var hasFileChanged = git_1.addToGitIgnore(paths, 'Beagle');
         if (hasFileChanged)
-            styledLogger_1.logInfo("\"" + outputPath + "\" was successfully added to your .gitignore.");
+            styledLogger_1.logInfo("The following paths were successfully added to your .gitignore: " + paths.join(', '));
     }
     catch (_a) {
-        styledLogger_1.logWarning("Could not add \"" + outputPath + "\" to your .gitignore. Do you have a .gitignore file?");
+        styledLogger_1.logWarning("Could not add to your .gitignore: " + paths.join(', ') + ". Do you have a .gitignore file?");
     }
 }
 function setupPackageScripts(isNpm) {
@@ -84,7 +85,7 @@ function handleViewEngine(_a) {
     var beagleModulePath = _a.beagleModulePath, outputPath = _a.outputPath, isNpm = _a.isNpm;
     setupConfig(beagleModulePath, outputPath);
     setupDependencies(isNpm);
-    setupGitIgnore(outputPath);
+    setupGitIgnore([outputPath, config_2.getBeagleModuleCopyPath(beagleModulePath)]);
     setupPackageScripts(isNpm);
     setupAngularJson(beagleModulePath, outputPath);
     logViewEngineInfo(isNpm);

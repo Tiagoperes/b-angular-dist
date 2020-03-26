@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
+var path_1 = require("path");
 exports.envVariables = {
     config: 'VIEW_ENGINE_CONFIG',
     input: 'BEAGLE_MODULE_PATH',
@@ -38,6 +39,12 @@ function getConfigFromEnvVariables() {
         envConfig.outputPath = getEnv('output');
     return envConfig;
 }
+function getBeagleModuleCopyPath(originalModulePath) {
+    var dir = path_1.dirname(originalModulePath);
+    var filename = path_1.basename(originalModulePath).replace(/(.*)\.ts$/, '.$1.original.ts');
+    return dir + "/" + filename;
+}
+exports.getBeagleModuleCopyPath = getBeagleModuleCopyPath;
 function getViewEngineConfig() {
     return fixConfigurationPaths(tslib_1.__assign(tslib_1.__assign(tslib_1.__assign({}, exports.defaultViewEngineConfig), getConfigFromFile()), getConfigFromEnvVariables()));
 }

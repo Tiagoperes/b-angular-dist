@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
 var fs_1 = require("fs");
+var path_1 = require("path");
 require("amd-loader");
 require("reflect-metadata");
 var config_1 = require("./config");
@@ -46,11 +47,13 @@ function getBeagleMetadata(beagleModulePath) {
 function start() {
     var viewEngineConfig = config_1.getViewEngineConfig();
     var _a = getBeagleMetadata(viewEngineConfig.beagleModulePath), beagleModuleName = _a.beagleModuleName, config = _a.config;
+    var beagleModuleCopyPath = config_1.getBeagleModuleCopyPath(viewEngineConfig.beagleModulePath);
     var fileContent;
     try {
         fileContent = beagle_module_1.generateViewEngineCode({
             config: config,
             beagleModuleName: beagleModuleName,
+            beagleModuleCopyPath: filesystem_1.getImportFilePath(viewEngineConfig.outputPath, beagleModuleCopyPath),
             angularVersion: packages_1.getPackageVersion('@angular/core'),
         });
     }
@@ -61,7 +64,8 @@ function start() {
     }
     filesystem_1.ensureDirectoryExistence(viewEngineConfig.outputPath);
     fs_1.writeFileSync(viewEngineConfig.outputPath, fileContent);
-    styledLogger_1.logSuccess("Beagle module for View Engine has been successfully generated at \"" + viewEngineConfig.outputPath + "\"!");
+    fs_1.copyFileSync(viewEngineConfig.beagleModulePath, beagleModuleCopyPath);
+    styledLogger_1.logSuccess("Beagle module files have been successfully generated at \"" + path_1.dirname(viewEngineConfig.outputPath) + "\"!");
 }
 exports.start = start;
 try {

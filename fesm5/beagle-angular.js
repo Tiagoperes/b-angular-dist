@@ -134,13 +134,13 @@ var AbstractBeagleRemoteView = /** @class */ (function () {
 var AbstractBeagleProvider = /** @class */ (function () {
     function AbstractBeagleProvider() {
     }
-    AbstractBeagleProvider.prototype.start = function (baseUrl) {
+    AbstractBeagleProvider.prototype.start = function (config) {
         if (this.service) {
             console.error('Beagle service has already started!');
             return;
         }
         // @ts-ignore // fixme
-        this.service = createCoreBeagleUIService({ baseUrl: baseUrl });
+        this.service = createCoreBeagleUIService(config);
     };
     AbstractBeagleProvider.prototype.getBeagleUIService = function () {
         return this.service;
@@ -216,10 +216,13 @@ function BeagleModule(config) {
         Reflect.defineMetadata('beagleConfig', config, target);
     };
 }
+function getBeagleConfigMetadata(beagleModuleClass) {
+    return Reflect.getMetadata('beagleConfig', beagleModuleClass);
+}
 
 /**
  * Generated bundle index. Do not edit.
  */
 
-export { AbstractBeagleProvider, AbstractBeagleRemoteView, BeagleComponent, BeagleContextModule, BeagleModule, BeagleContextDirective as ɵa, contextSelector as ɵb };
+export { AbstractBeagleProvider, AbstractBeagleRemoteView, BeagleComponent, BeagleContextModule, BeagleModule, getBeagleConfigMetadata, BeagleContextDirective as ɵa, contextSelector as ɵb };
 //# sourceMappingURL=beagle-angular.js.map

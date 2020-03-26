@@ -333,13 +333,13 @@
     var AbstractBeagleProvider = /** @class */ (function () {
         function AbstractBeagleProvider() {
         }
-        AbstractBeagleProvider.prototype.start = function (baseUrl) {
+        AbstractBeagleProvider.prototype.start = function (config) {
             if (this.service) {
                 console.error('Beagle service has already started!');
                 return;
             }
             // @ts-ignore // fixme
-            this.service = createCoreBeagleUIService({ baseUrl: baseUrl });
+            this.service = createCoreBeagleUIService(config);
         };
         AbstractBeagleProvider.prototype.getBeagleUIService = function () {
             return this.service;
@@ -415,12 +415,16 @@
             Reflect.defineMetadata('beagleConfig', config, target);
         };
     }
+    function getBeagleConfigMetadata(beagleModuleClass) {
+        return Reflect.getMetadata('beagleConfig', beagleModuleClass);
+    }
 
     exports.AbstractBeagleProvider = AbstractBeagleProvider;
     exports.AbstractBeagleRemoteView = AbstractBeagleRemoteView;
     exports.BeagleComponent = BeagleComponent;
     exports.BeagleContextModule = BeagleContextModule;
     exports.BeagleModule = BeagleModule;
+    exports.getBeagleConfigMetadata = getBeagleConfigMetadata;
     exports.ɵa = BeagleContextDirective;
     exports.ɵb = contextSelector;
 
