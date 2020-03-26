@@ -20,9 +20,8 @@
     "beagle-web": "https://github.com/ZupIT/beagle-web.git#173f0dfdf55aa425727a817476b1f3cd16b8e3fc"
   },
   "peerDependencies": {
-    "@angular/common": ">= 6.0.0 < 10.0",
-    "@angular/core": ">= 6.0.0 < 10.0",
-    "tslib": ">= 1.0"
+    "@angular/common": ">= 6 < 10",
+    "@angular/core": ">= 6 < 10"
   },
   "bin": {
     "beagle": "./cli/index.js"
