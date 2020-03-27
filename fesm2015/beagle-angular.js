@@ -1,4 +1,4 @@
-import { __awaiter, __decorate } from 'tslib';
+import { __awaiter, __decorate, __metadata } from 'tslib';
 import { findById } from 'beagle-web/dist/utils/tree-reading';
 import createCoreBeagleUIService from 'beagle-web';
 import { ViewContainerRef, ElementRef, Input, Directive, NgModule } from '@angular/core';
@@ -170,15 +170,18 @@ BeagleContextDirective.ctorParameters = () => [
     { type: ElementRef }
 ];
 __decorate([
-    Input()
+    Input(),
+    __metadata("design:type", String)
 ], BeagleContextDirective.prototype, "_elementId", void 0);
 __decorate([
-    Input()
+    Input(),
+    __metadata("design:type", String)
 ], BeagleContextDirective.prototype, "_viewId", void 0);
 BeagleContextDirective = __decorate([
     Directive({
         selector: `[${contextSelector}]`,
-    })
+    }),
+    __metadata("design:paramtypes", [ViewContainerRef, ElementRef])
 ], BeagleContextDirective);
 
 let BeagleContextModule = class BeagleContextModule {

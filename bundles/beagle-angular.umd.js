@@ -385,15 +385,18 @@
             { type: core.ElementRef }
         ]; };
         __decorate([
-            core.Input()
+            core.Input(),
+            __metadata("design:type", String)
         ], BeagleContextDirective.prototype, "_elementId", void 0);
         __decorate([
-            core.Input()
+            core.Input(),
+            __metadata("design:type", String)
         ], BeagleContextDirective.prototype, "_viewId", void 0);
         BeagleContextDirective = __decorate([
             core.Directive({
                 selector: "[" + contextSelector + "]",
-            })
+            }),
+            __metadata("design:paramtypes", [core.ViewContainerRef, core.ElementRef])
         ], BeagleContextDirective);
         return BeagleContextDirective;
     }());
