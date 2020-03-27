@@ -21,8 +21,7 @@
   },
   "peerDependencies": {
     "@angular/common": ">= 6 < 10",
-    "@angular/core": ">= 6 < 10",
-    "tslib": ">= 1"
+    "@angular/core": ">= 6 < 10"
   },
   "bin": {
     "beagle": "./cli/index.js"
