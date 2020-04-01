@@ -1,6 +1,6 @@
 import { __awaiter, __decorate, __metadata } from 'tslib';
-import { findById } from 'beagle-web/dist/utils/tree-reading';
-import createCoreBeagleUIService from 'beagle-web';
+import { findById } from '@zup-it/beagle-web/dist/utils/tree-reading';
+import createCoreBeagleUIService from '@zup-it/beagle-web';
 import { ViewContainerRef, ElementRef, Input, Directive, NgModule } from '@angular/core';
 import 'reflect-metadata';
 
@@ -101,7 +101,7 @@ class AbstractBeagleRemoteView {
     }
     ngAfterViewInit() {
         if (!this.beagleProvider || !this.ngZone || !this.changeDetector) {
-            throw new BeagleRuntimeError(`"beagleProvider", "ngZone" and "changeDetector" must be set before the AfterViewInit runs. Use the constructor or the component instance to set their values.`);
+            throw new BeagleRuntimeError('"beagleProvider", "ngZone" and "changeDetector" must be set before the AfterViewInit runs. Use the constructor or the component instance to set their values.');
         }
         this.createBeagleView();
         this.view.updateWithFetch(this.loadParams);

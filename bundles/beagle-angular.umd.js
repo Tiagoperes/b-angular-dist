@@ -1,6 +1,6 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('beagle-web/dist/utils/tree-reading'), require('beagle-web'), require('@angular/core'), require('reflect-metadata')) :
-    typeof define === 'function' && define.amd ? define('beagle-angular', ['exports', 'beagle-web/dist/utils/tree-reading', 'beagle-web', '@angular/core', 'reflect-metadata'], factory) :
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@zup-it/beagle-web/dist/utils/tree-reading'), require('@zup-it/beagle-web'), require('@angular/core'), require('reflect-metadata')) :
+    typeof define === 'function' && define.amd ? define('beagle-angular', ['exports', '@zup-it/beagle-web/dist/utils/tree-reading', '@zup-it/beagle-web', '@angular/core', 'reflect-metadata'], factory) :
     (global = global || self, factory(global['beagle-angular'] = {}, global.treeReading, global.createCoreBeagleUIService, global.ng.core));
 }(this, (function (exports, treeReading, createCoreBeagleUIService, core) { 'use strict';
 
@@ -306,7 +306,7 @@
         };
         AbstractBeagleRemoteView.prototype.ngAfterViewInit = function () {
             if (!this.beagleProvider || !this.ngZone || !this.changeDetector) {
-                throw new BeagleRuntimeError("\"beagleProvider\", \"ngZone\" and \"changeDetector\" must be set before the AfterViewInit runs. Use the constructor or the component instance to set their values.");
+                throw new BeagleRuntimeError('"beagleProvider", "ngZone" and "changeDetector" must be set before the AfterViewInit runs. Use the constructor or the component instance to set their values.');
             }
             this.createBeagleView();
             this.view.updateWithFetch(this.loadParams);

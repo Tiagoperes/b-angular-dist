@@ -95,7 +95,7 @@ scripts: {
 }
 ```
 
-5. In your `angular.json` file, create the following entry in your project's configuration:
+5. In your `angular.json` file, create the following entries in your project's configuration:
 ```json
 "architect": {
   "options": {
@@ -105,11 +105,22 @@ scripts: {
         "with": "src/app/.beagle.module.generated.ts"
       }
     ]
+  },
+  "configurations": {
+    "production": {
+      "fileReplacements": [
+        {
+          "replace": "src/app/beagle.module.ts",
+          "with": "src/app/.beagle.module.generated.ts"
+        }
+      ]
+    }
   }
 }
 ```
 
-6. Add `src/app/.beagle.module.generated.ts` to your `.gitignore`
+6. Add `src/app/.beagle.module.generated.ts` and `src/app/.beagle.module.original.ts` to your
+`.gitignore`
 
 7. Done! You should always use `yarn serve/build` or `npm run serve/build` instead of
 `ng serve/build`.

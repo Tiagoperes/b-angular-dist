@@ -1,4 +1,4 @@
-import { BeagleView } from 'beagle-web';
+import { BeagleView } from '@zup-it/beagle-web';
 import { BeagleContext } from '../../types';
 export declare function getContext(viewId: string, elementId: string): BeagleContext<Record<string, Record<string, any>>>;
 export declare function registerView(viewId: any, view: BeagleView): void;

@@ -1,6 +1,6 @@
 import { Type } from '@angular/core';
-import { BeagleConfig, BeagleUIService, DefaultSchema, LoadParams, IdentifiableBeagleUIElement, BeagleView } from 'beagle-web';
-import { UpdateWithTreeParams, Omit } from 'beagle-web/dist/types';
+import { BeagleConfig, BeagleUIService, DefaultSchema, LoadParams, IdentifiableBeagleUIElement, BeagleView } from '@zup-it/beagle-web';
+import { UpdateWithTreeParams, Omit } from '@zup-it/beagle-web/dist/types';
 export interface BeagleAngularConfig<Schema> extends BeagleConfig<Schema> {
     components: {
         error: Type<{}>;

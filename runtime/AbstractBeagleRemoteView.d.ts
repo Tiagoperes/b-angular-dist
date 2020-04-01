@@ -1,6 +1,6 @@
 import { AfterViewInit, OnDestroy, OnChanges, SimpleChanges, ChangeDetectorRef, NgZone, TemplateRef } from '@angular/core';
+import { LoadParams, BeagleView, IdentifiableBeagleUIElement } from '@zup-it/beagle-web';
 import { AbstractBeagleProvider } from './AbstractBeagleProvider';
-import { LoadParams, BeagleView, IdentifiableBeagleUIElement } from 'beagle-web';
 export declare abstract class AbstractBeagleRemoteView implements AfterViewInit, OnDestroy, OnChanges {
     loadParams: LoadParams;
     tree: IdentifiableBeagleUIElement<any>;

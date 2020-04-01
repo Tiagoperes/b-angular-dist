@@ -39,14 +39,20 @@ function addFileReplacement(replacements, replace, replaceWith) {
     }
     return false;
 }
-function createReplaceEntry(angularJson, replace, replaceWith) {
-    var projects = Object.values(angularJson.projects);
-    var project = projects[0];
+function createReplaceEntryForProject(project, replace, replaceWith) {
+    var _a, _b;
+    if (!((_b = (_a = project) === null || _a === void 0 ? void 0 : _a.architect) === null || _b === void 0 ? void 0 : _b.build))
+        return;
     object_1.ensurePathExistence(project, 'architect.build.options.fileReplacements', []);
     var hasReplacedGlobal = addFileReplacement(project.architect.build.options.fileReplacements, replace, replaceWith);
     object_1.ensurePathExistence(project, 'architect.build.configurations.production.fileReplacements', []);
     var hasReplacedProduction = addFileReplacement(project.architect.build.configurations.production.fileReplacements, replace, replaceWith);
     return hasReplacedGlobal || hasReplacedProduction;
+}
+function createReplaceEntry(angularJson, replace, replaceWith) {
+    var projects = Object.values(angularJson.projects);
+    var hasChangedArray = projects.map(function (project) { return createReplaceEntryForProject(project, replace, replaceWith); });
+    return hasChangedArray.some(function (value) { return value; });
 }
 function createAngularJsonEntries(beagleModulePath, outputPath) {
     var root = process.cwd();
