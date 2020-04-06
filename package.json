@@ -17,7 +17,7 @@
   "sideEffects": false,
   "private": false,
   "dependencies": {
-    "@zup-it/beagle-web": "0.0.6"
+    "@zup-it/beagle-web": "https://github.com/ZupIT/beagle-web-ce.git#22fb989ce31fe437641478aad99ba6fcc8de6a6b"
   },
   "peerDependencies": {
     "@angular/common": ">= 6 < 10",
